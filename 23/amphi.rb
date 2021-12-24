@@ -75,9 +75,101 @@ class AmphipodOrganiser
             d3:  'D',
             d4:  'D',
         } # for testing complete test
+        test_state_1 = {
+            cost: 0,
+            h1:  nil,
+            h2:  nil,
+            h3:  nil,
+            h4:  nil,
+            h5:  nil,
+            h6:  nil,
+            h7:  nil,
+            h8:  nil,
+            h9:  nil,
+            h10: nil,
+            h11: nil,
+            a1:  'A',
+            a2:  'D',
+            a3:  'A',
+            a4:  'D',
+            b1:  'B',
+            b2:  'D',
+            b3:  'B',
+            b4:  'A',
+            c1:  'D',
+            c2:  'B',
+            c3:  'B',
+            c4:  'B',
+            d1:  'C',
+            d2:  'C',
+            d3:  'C',
+            d4:  'A',
+        }
+        test_state_2 = {
+            cost: 245623,
+            h1:  nil,
+            h2:  nil,
+            h3:  nil,
+            h4:  nil,
+            h5:  nil,
+            h6:  nil,
+            h7:  nil,
+            h8:  nil,
+            h9:  nil,
+            h10: nil,
+            h11: nil,
+            a1:  'D',
+            a2:  'A',
+            a3:  'D',
+            a4:  'C',
+            b1:  'B',
+            b2:  'C',
+            b3:  'B',
+            b4:  'D',
+            c1:  'C',
+            c2:  'A',
+            c3:  'A',
+            c4:  'B',
+            d1:  'D',
+            d2:  'A',
+            d3:  'C',
+            d4:  'A',
+        } # these three for testing equal function - 2 and 3 identical
+        test_state_3 = {
+            cost: 245623,
+            h1:  nil,
+            h2:  nil,
+            h3:  nil,
+            h4:  nil,
+            h5:  nil,
+            h6:  nil,
+            h7:  nil,
+            h8:  nil,
+            h9:  nil,
+            h10: nil,
+            h11: nil,
+            a1:  'D',
+            a2:  'A',
+            a3:  'D',
+            a4:  'C',
+            b1:  'B',
+            b2:  'C',
+            b3:  'B',
+            b4:  'D',
+            c1:  'C',
+            c2:  'A',
+            c3:  'A',
+            c4:  'B',
+            d1:  'D',
+            d2:  'A',
+            d3:  'C',
+            d4:  'A',
+        }
         # puts "It is #{!equal?(start_state, end_state)} that my equal function works"
-        # p '--------------'
         # puts "It is #{equal?(start_state, start_state)} that my equal function works"
+        # puts "It is #{equal?(test_state_2, test_state_3)} that my equal function works"
+        # puts "It is #{!equal?(test_state_1, test_state_3)} that my equal function works"
+        # puts "It is #{!equal?(test_state_1, test_state_2)} that my equal function works"
         @links = {
             h1:  [:h2],
             h2:  [:h1, :h3],
@@ -120,9 +212,13 @@ class AmphipodOrganiser
 
     def move
         # take state with lowest cost
-        puts "Visited count : #{@visited_states.size}"
-        puts "Queue count : #{@states.size}"
+        # puts "Visited count : #{@visited_states.size}"
+        # puts "Queue count : #{@states.size}"
+        @states.heap.each { |state| p state }
+        puts '=================================='
         @current_state = @states.pop
+        @states.heap.each { |state| p state }
+        puts '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
         @visited_states << @current_state
         if Time.now - @last_print_time > 0.5
             @last_print_time = Time.now
@@ -148,7 +244,7 @@ class AmphipodOrganiser
 
     def update_states(new_states)
         new_states.each do |new_state|
-            p new_state
+            # p new_state
             if complete?(new_state)
                 @cost_to_complete = new_state[:cost]
                 return
