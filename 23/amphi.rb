@@ -200,10 +200,11 @@ class AmphipodOrganiser
             d4:  [:d3],
         }
         @visited_states = []
-        @states = Heap.new
+        @states = Heap.new { |a, b| a[:cost] < b[:cost] }
         @states << start_state
         @cost_to_complete = nil
         until @cost_to_complete
+            puts "Number of visited states: #{@visited_states.count}, Number of states 'to go': #{@states.size}"
             move
         end
         puts "WE GOT TO THE EEEEEEEND!!!!!"
@@ -214,11 +215,11 @@ class AmphipodOrganiser
         # take state with lowest cost
         # puts "Visited count : #{@visited_states.size}"
         # puts "Queue count : #{@states.size}"
-        @states.heap.each { |state| p state }
-        puts '=================================='
+        # print_cost_heap
+        # puts '=================================='
         @current_state = @states.pop
-        @states.heap.each { |state| p state }
-        puts '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+        # print_cost_heap
+        # puts '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
         @visited_states << @current_state
         if Time.now - @last_print_time > 0.5
             @last_print_time = Time.now
@@ -257,6 +258,9 @@ class AmphipodOrganiser
                 @states.offer_at(i, new_state)
             else
                 @states << new_state
+                # puts "pushing #{new_state[:cost]}"
+                # print_cost_heap
+                # puts '--------'
             end
         end
     end
@@ -395,6 +399,21 @@ class AmphipodOrganiser
 
         11.times { print '-' }
         puts ' '
+    end
+
+    def print_cost_heap
+        line_width = 1
+        line_count = 0
+        @states.heap.each do |s|
+          print "#{s[:cost]} - "
+          line_count += 1
+          if line_count == line_width
+              line_width *= 2
+              line_count = 0
+              puts ''
+          end
+        end
+        puts "\n"  
     end
 end
 

@@ -19,18 +19,32 @@ class Heap
   
     def pop
       result = peak
-  
+
       if size > 1
-        @size -= 1
-        @heap[0] = @heap[@size]
-        rebalance_down(0)
-      else
-        @size = 0
+        @heap[0] = @heap[-1]
       end
-  
-      @heap.delete_at(@size)
-  
+
+      @size -= 1 unless @size == 0
+      @heap.delete_at(-1)
+
+      rebalance_down(0)
+
       result
+    end
+
+    def print_heap
+      line_width = 1
+      line_count = 0
+      @heap.each do |s|
+        print s[:cost]
+        line_count += 1
+        if line_count == line_width
+            line_width *= 2
+            line_count = 0
+            puts ''
+        end
+      end
+      puts "\n"
     end
   
     def add(element)
