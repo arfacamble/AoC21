@@ -138,11 +138,11 @@ end
 def format_grid_part_2(grid)
     height = grid.size
     width = grid.first.size
-    nodes = {}
+    nodes = []
     grid.each_with_index do |line, y|
         line.each_with_index do |val, x|
             name = "_#{x}_#{y}".to_sym
-            nodes[name] = {
+            nodes << {
                 coord: "_#{x}_#{y}".to_sym,
                 x: x,
                 y: y,
