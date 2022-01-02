@@ -51,6 +51,40 @@ middle = Cuboid.new(x: 3..6, y: 5..9, z: 4..6)
 puts "\n=========================================\n
 Remaining chunks when subtracting a cuboid that fills MOST\nsubtract: #{biggunish.dimensions}\nfrom: #{biggun.dimensions}"
 overlapper = Overlapper.new(original: biggunish, change: biggun, switch: 'on')
-# overlapper.to_do.each do |cuboid|
-#     p cuboid.dimensions
-# end
+puts "Remains:"
+overlapper.to_do.each do |cuboid|
+    p cuboid.dimensions
+end
+
+puts "\n=========================================\n
+Remaining chunks when subtracting a cuboid that is in the CORNER\nsubtract: #{corner.dimensions}\nfrom: #{biggun.dimensions}"
+overlapper = Overlapper.new(original: corner, change: biggun, switch: 'on')
+puts "Remains:"
+overlapper.to_do.each do |cuboid|
+    p cuboid.dimensions
+end
+
+puts "\n=========================================\n
+Remaining chunks when subtracting a cuboid that is on an EDGE\nsubtract: #{edge.dimensions}\nfrom: #{biggun.dimensions}"
+overlapper = Overlapper.new(original: edge, change: biggun, switch: 'on')
+puts "Remains:"
+overlapper.to_do.each do |cuboid|
+    p cuboid.dimensions
+end
+
+puts "\n=========================================\n
+Remaining chunks when subtracting a cuboid that is on a PLANE\nsubtract: #{plane.dimensions}\nfrom: #{biggun.dimensions}"
+overlapper = Overlapper.new(original: plane, change: biggun, switch: 'on')
+puts "Remains:"
+overlapper.to_do.each do |cuboid|
+    p cuboid.dimensions
+end
+
+puts "\n=========================================\n
+Remaining chunks when subtracting a cuboid that is in the MIDDLE\nsubtract: #{middle.dimensions}\nfrom: #{biggun.dimensions}"
+overlapper = Overlapper.new(original: middle, change: biggun, switch: 'on')
+puts "Remains:"
+overlapper.to_do.each do |cuboid|
+    p cuboid.dimensions
+end
+

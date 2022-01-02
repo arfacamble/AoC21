@@ -13,4 +13,8 @@ class Cuboid
             z: @z,
         }
     end
+
+    def volume
+        @x.size * @y.size * @z.size
+    end
 end

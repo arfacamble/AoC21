@@ -18,11 +18,11 @@ class Overlapper
         return unless @overlap[:z]
         @overlap = Cuboid.new(overlap)
         @overlaps = true
-        @to_do = []
         # find todos = change - overlap
-        subtract_internal_cuboid(@change, @overlap)
-        # return if @on
+        @to_do = subtract_internal_cuboid(@change, @overlap)
+        return if @on
         # find original_minus_overlap = original - overlap
+        @original_minus_overlap = subtract_internal_cuboid(@original, @overlap)
     end
 
     def find_overlap(dim)
@@ -51,8 +51,9 @@ class Overlapper
     def subtract_internal_cuboid(big_c, small_c)
         big_c = Cuboid.new(big_c.dimensions)
         extras = []
+        remaining = []
         %i(x y z).each do |dim|
-            subtract_internal_cuboid(big_c.send(dim), small_c.send(dim)).each { |range| extras << { dimension: dim, range: range } }
+            range_subtract(big_c.send(dim), small_c.send(dim)).each { |range| extras << { dimension: dim, range: range } }
         end
         extras.sort_by! { |e| e[:range].size }
         until extras.empty?
@@ -60,15 +61,18 @@ class Overlapper
             dimension = cut_thing[:dimension]
             cut_range = cut_thing[:range]
             extra = big_c.dimensions
-            extra[:dimension] = cut_range
-            extras << Cuboid.new(extra)
-            new_big_c_range = range_subtract(big_c.send(dimension), cut_range)
-            big_c.send(dimension, new_big_c_range)
+            extra[dimension] = cut_range
+            remaining << Cuboid.new(extra)
+            new_big_c_range = range_subtract(big_c.send(dimension), cut_range).first
+            big_c.send((dimension.to_s + '=').to_sym, new_big_c_range)
         end
+        remaining
     end
 
     def range_subtract(big_r, small_r)
-        if big_r.first == small_r.first
+        if big_r == small_r
+            []
+        elsif big_r.first == small_r.first
             [(small_r.last + 1)..big_r.last]
         elsif big_r.last == small_r.last
             [big_r.first..(small_r.first - 1)]
@@ -79,4 +83,8 @@ class Overlapper
             ]
         end
     end
+
+    def clone_hash(hash)
+        Marshal.load(Marshal.dump(hash))
+      end      
 end
