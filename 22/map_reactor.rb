@@ -3,13 +3,15 @@ require_relative 'overlapper'
 # instruction example: {:switch=>"on", :cuboid=>#<Cuboid:0x0000020c7f4bbb70 @x=-17..30, @y=-5..41, @z=-33..14>}
 
 class MapReactor
-    attr_reader :on_blocks
+    attr_reader :on_blocks, :volume
 
     def initialize(instructions)
         @on_blocks = []     # should be filled with Cuboids
         instructions.each do |instruction|
             instruction[:switch] == 'on' ? switch_on(instruction[:cuboid]) : switch_off(instruction[:cuboid])
         end
+        @volume = 0
+        @on_blocks.each { |block| @volume += block.volume }
     end
 
     def switch_on(cuboid)

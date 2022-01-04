@@ -30,9 +30,9 @@ class Overlapper
         change_min = change.first
         change_max = change.last
         original = @original.send(dim)
-        left_on_right = change_min < original.last ? 'less' : 'more'
+        left_on_right = change_min <= original.last ? 'less' : 'more'
         return if left_on_right == 'more'
-        right_on_left = change_max < original.first ? 'less' : 'more'
+        right_on_left = change_max >= original.first ? 'more' : 'less'
         return if right_on_left == 'less'
         left_inside = original.include?(change_min)
         right_inside = original.include?(change_max)
