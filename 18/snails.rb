@@ -34,13 +34,20 @@ class SnailAddTwo
 
     def reduce
         until no_fourth_nesting && no_double_digits
-            puts 'something to do'
+            unless no_fourth_nesting
+                explode
+            end
+            unless no_double_digits
+                split
+            end
         end
     end
 
+    def explode
+
+    end
+
     def no_fourth_nesting
-        p @answer.flatten(3)
-        p @answer.flatten
         @answer.flatten(3) == @answer.flatten
     end
 
